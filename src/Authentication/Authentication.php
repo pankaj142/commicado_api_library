@@ -1,5 +1,5 @@
 <?php
-namespace Commicado;
+namespace Commicado\Authentication;
 use function Functions\call_http_method;
 
 class Authentication{

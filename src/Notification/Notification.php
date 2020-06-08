@@ -1,16 +1,16 @@
 <?php
-namespace Commicado;
+namespace Commicado\Notification;
 use function Functions\call_http_method;
 use function Functions\generate_failure_response;
 
-class Notification extends \Commicado\Authentication{
+class Notification extends \Commicado\Authentication\Authentication{
     public function __construct() {
         $this->base_url = "http://api.comunicado.in";
         parent::__construct();
         $this->token = "";
     }
 
-    public function generate_token($client_id, $client_secret){
+    public function authorize($client_id, $client_secret){
         print_r(" -- inside generate token -- ");
         $get_token_res = parent::get_token($client_id, $client_secret);
 
