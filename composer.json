@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "commicado\\" : "src/commicado/index.php"
+            "commicado\\" : "src/"
         }
     },
     "require": {}

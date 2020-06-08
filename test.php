@@ -1,5 +1,15 @@
+
 <?php
-require_once './src/commicado/index.php';
+
+require_once __DIR__. '/src/commicado/class/class-auth.php';
+foreach(glob( __DIR__ . '/src/commicado/helpers/*.php') as $file){
+    print_r(" --wwww-- ");
+    require_once $file;
+}
+foreach(glob( __DIR__ . '/src/commicado/class/*.php') as $file){
+    print_r(" -xxx--- ");
+    require_once $file;
+}
 
 $client_id = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNDcsInVzZXJfZW1haWwiOiJwYW5rYWpAcHN5Y2h4ODYuY29tIiwiZXhwIjoxNTkxNjI5OTkxLCJpYXQiOjE1OTE1ODY3OTEsInJvbGUiOjB9.GFGJmd0vEBk3dodwJo96JgXBMNxO-HIUVOtpNXI9-g4";
 $client_secret = 'sha256$36BHlxFz$899fb42eca8a907e222c8bf9554a43a5b6ff5bfcf3d7d555b344bec8d052036c';
