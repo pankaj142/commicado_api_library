@@ -1,5 +1,6 @@
 <?php
-namespace commicado;
+namespace Commicado\Authentication;
+use function Functions\call_http_method;
 
 class Authentication{
     public function __construct() {
@@ -12,6 +13,7 @@ class Authentication{
 
     public function get_token($client_id, $client_secret){
         print_r(" -- inside get token");        
+
         $body_data = array(
             "client_id" => $client_id,
             "client_secret" => $client_secret

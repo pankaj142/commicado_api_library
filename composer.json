@@ -11,8 +11,9 @@
     ],
     "autoload": {
         "psr-4": {
-            "commicado\\" : "src/"
-        }
+            "Commicado\\" : "src/"
+        },
+        "files" : [ "src/lib/helpers.php"]
     },
     "require": {}
 }
