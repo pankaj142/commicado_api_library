@@ -1,9 +1,9 @@
 <?php
-namespace Commicado\Notification;
+namespace Commicado;
 use function Functions\call_http_method;
 use function Functions\generate_failure_response;
 
-class Notification extends \Commicado\Authentication\Authentication{
+class Notification extends \Commicado\Authentication{
     public function __construct() {
         $this->base_url = "http://api.comunicado.in";
         parent::__construct();

@@ -31,24 +31,24 @@ print_r($res);
 
 // ------------------------ sending sms ---------------------------------------------
 
-// $receivers = array();
-// array_push($receivers, '9975277142');
-// $message = "This is testing sms from pankaj";
+$receivers = array();
+array_push($receivers, '9975277142');
+$message = "This is testing sms from pankaj";
 
-// $res = $class_notification_obj->send_sms($receivers, $message);
-// print_r($res);
+$res = $class_notification_obj->send_sms($receivers, $message);
+print_r($res);
 
 
 
 // ------------------------ sending app notification---------------------------------------------
 
-// $receivers = array();
-// array_push($receivers, '9975277142');
-// $message = "This is app notification from pankaj";
-// $subject = "this is subject";
+$receivers = array();
+array_push($receivers, '9975277142');
+$message = "This is app notification from pankaj";
+$subject = "this is subject";
 
-// $res = $class_notification_obj->send_app_notification($receivers, $subject, $message);
-// print_r($res);
+$res = $class_notification_obj->send_app_notification($receivers, $subject, $message);
+print_r($res);
 
 
 // ------------------------ get services---------------------------------------------
