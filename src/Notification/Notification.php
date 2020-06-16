@@ -1,7 +1,8 @@
 <?php
 namespace Commicado\Notification;
-use function Functions\call_http_method;
-use function Functions\generate_failure_response;
+use function Helpers\call_http_method;
+use function Helpers\generate_failure_response;
+use function Helpers\call_http_method_send_email;
 
 class Notification extends \Commicado\Authentication\Authentication{
     public function __construct() {
@@ -22,14 +23,12 @@ class Notification extends \Commicado\Authentication\Authentication{
         }
     }
 
-    // public function show_new_token(){
-    //     print_r(" -- token showing -- ");
-    //     print_r($this->token);
-    // }
+    public function send_email($sender, $receivers, $subject, $headers, $body,  $request_service, $attachments = array() ){
+        print_r("emial notification -- ");
+        // print_r($body);
+        // die();
 
-    public function send_email($sender, $receiver, $subject, $message, $headers, $attachments ){
-        print_r("emial notification");
-        if(empty($sender) || empty($receiver) || empty($subject) || empty($message)){
+        if(empty($sender) || empty($receivers) || empty($subject) || empty($request_service)){
             print_r("compulsary fields missing");
             // return false;
             return generate_failure_response(9999, 'Compulsary fields are missing');
@@ -40,23 +39,30 @@ class Notification extends \Commicado\Authentication\Authentication{
             return generate_failure_response(9999, 'Token is not generated. Please generate token and try again.'); 
         }
 
+        $receiver_list = "";
+        if(is_array($receivers) == true){
+            foreach($receivers as $receiver){
+                $receiver_list .= $receiver . ' ,';
+            }
+            $receiver_list = substr($receiver_list, 0,-2);
+        }else{
+            $receiver_list = $receivers;
+        }
+        print_r($receiver_list);
+        // die();
+        
         $body_data = array(
             "sender" => $sender,
-            "receiver" => $receiver,
+            "receiver" => $receiver_list,
             "subject" => $subject,
             "header" => $headers,
-            "body" => $message,
+            "body" => $body,
             "notification_type" => "email",
-            "request_service" => "mcard"
+            "request_service" => $request_service,
+            "attachments" => $attachments
         );
 
-        // $headers_data = array(
-        //     "Content-Type: application/json",
-        //     "Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNDcsInN0YXR1cyI6MiwiZXhwIjoxNTkxNDA2MjU1LCJpYXQiOjE1OTEzNjMwNTUsInJvbGUiOjB9.qMF1WsCELTtseADGFzTCE_GAsoNkJXJffDa4GwiaPn0"
-        // );
-
         $headers_data = array(
-              'Content-Type' => 'application/json',
             'Authorization' => $this->token
             //   'User-Agent' => 'commicado/wordpress;php',
         );
@@ -64,8 +70,8 @@ class Notification extends \Commicado\Authentication\Authentication{
         $route = "/api/notification";
         $url = $this->base_url . $route;
         $http_type = "POST";
-        $post_body_content_type = "application_json";
-        $api_res = call_http_method($url, $body_data, $http_type, $headers_data, $post_body_content_type );
+        $post_body_content_type = "form_data";
+        $api_res = call_http_method_send_email($url, $body_data,$headers_data, $post_body_content_type );
 
         if($api_res['response']){
           return $api_res['response'];
@@ -91,7 +97,8 @@ class Notification extends \Commicado\Authentication\Authentication{
             "body" => $message,
             "notification_type" => "sms",
             "request_service" => "test",
-            "sms_type" => "transactional",
+            // "sms_type" => "transactional",
+            "sms_type" => "promotional",
             "flag" => "k"
         );
     
@@ -197,6 +204,57 @@ class Notification extends \Commicado\Authentication\Authentication{
         $url = $this->base_url . $route;
         $http_type = "POST";
         $post_body_content_type = "application_json";
+        $api_res = call_http_method($url, $body_data, $http_type, $headers_data, $post_body_content_type );
+
+        if($api_res['response']){
+            return $api_res['response'];
+        }else{
+            return generate_failure_response(9999, 'Something went wrong.');
+        }
+    }
+
+    public function send_voice_call(
+        $sender,
+        $receiver,
+        $subject,
+        $body,
+        $request_service,
+        $notification_module,
+        $file_1
+        ){
+
+        if( empty($sender) || empty($receiver) || empty($subject) || empty($body) || empty($request_service) || !is_array($receiver) || empty($notification_module) || empty($file_1)){
+            print_r("compulsary fields missing");
+            return generate_failure_response(9999, 'Compulsary fields are missing');
+        }
+
+        //return if token is not generated
+        if($this->token == ""){
+            return generate_failure_response(9999, 'Token is not generated. Please generate token and try again.'); 
+        }
+        $notification_type = "voice_call";
+
+        $body_data = array(
+            "sender" => $sender,
+            "receiver" => $receiver,
+            "subject" => $subject,
+            "body" => $body,
+            "notification_type" => $notification_type,
+            "request_service" => $request_service,
+            "notification_module" => $notification_module,
+            "file_1" => $file_1
+        );
+
+        $headers_data = array(
+            // 'Content-Type' => 'application/json',
+            'Authorization' => $this->token
+            //   'User-Agent' => 'commicado/wordpress;php',
+        );
+
+        $route = "/api/notification";
+        $url = $this->base_url . $route;
+        $http_type = "POST";
+        $post_body_content_type = "form_data";
         $api_res = call_http_method($url, $body_data, $http_type, $headers_data, $post_body_content_type );
 
         if($api_res['response']){

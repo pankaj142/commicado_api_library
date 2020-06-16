@@ -36,8 +36,6 @@
 // $res = $class_notification_obj->send_sms($receivers, $message);
 // print_r($res);
 
-
-
 // ------------------------ sending app notification---------------------------------------------
 
 // $receivers = array();
